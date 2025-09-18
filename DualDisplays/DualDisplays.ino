@@ -93,4 +93,12 @@ void loop() {
       delay (DELAY);    
     }
   }
+  int* dim = loadImageSprite("/angry1.PNG");
+  drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
+  
+  dim = loadImageSprite("/angry2.PNG");
+  drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
+  delay (DELAY);    
+  delay (DELAY);    
+  
 }

@@ -57,7 +57,6 @@ int32_t pngSeek(PNGFILE *page, int32_t position) {
 }
 
 int* loadImageSprite(const char *name) {
-  img.fillSprite(TFT_BLACK);
   int16_t rc = png.open(name, pngOpen, pngClose, pngRead, pngSeek, pngDraw);  
   int* arr = (int*)malloc(2* sizeof(int));
   if (rc == PNG_SUCCESS) {
