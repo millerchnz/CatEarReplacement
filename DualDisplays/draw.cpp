@@ -36,7 +36,7 @@ int pngDraw(PNGDRAW *pDraw) {
 }
 
 void * pngOpen(const char *filename, int32_t *size) {
-  Serial.printf("Attempting to open %s\n", filename);
+  //Serial.printf("Attempting to open %s\n", filename);
   pngfile = SD.open(filename, "r");
   *size = pngfile.size();
   return &pngfile;
