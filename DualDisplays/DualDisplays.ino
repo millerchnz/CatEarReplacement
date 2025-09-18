@@ -97,7 +97,7 @@ void loop() {
   drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
   
   dim = loadImageSprite("/angry2.PNG");
-  drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
+  drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
   delay (DELAY);    
   delay (DELAY);    
   
