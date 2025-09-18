@@ -1,0 +1,227 @@
+#include "draw.h"
+
+//display driver for BOTH displays
+TFT_eSPI tft = TFT_eSPI();
+
+//Sprite for display framebuffer
+TFT_eSprite img = TFT_eSprite(&tft);
+
+//PNG display variables
+File pngfile;
+PNG png;
+int xpos, ypos;
+
+void setupDisplay() {
+  
+   //Init displays
+   digitalWrite (TFT_CS_0, LOW);
+   digitalWrite (TFT_CS_1, LOW);
+   tft.init (); 
+   tft.fillScreen(BLACK);  
+   digitalWrite (TFT_CS_0, HIGH);
+   digitalWrite (TFT_CS_1, HIGH);
+
+   //create the sprite
+   img.createSprite(240, 230);
+   img.setRotation(0);
+   img.fillSprite(TFT_BLACK);
+
+}
+
+int pngDraw(PNGDRAW *pDraw) {
+  uint16_t lineBuffer[MAX_IMAGE_WIDTH];
+  png.getLineAsRGB565(pDraw, lineBuffer, PNG_RGB565_BIG_ENDIAN, 0xffffffff);
+  img.pushImage(xpos, ypos + pDraw->y, pDraw->iWidth, 1, lineBuffer);
+  return 1;
+}
+
+void * pngOpen(const char *filename, int32_t *size) {
+  Serial.printf("Attempting to open %s\n", filename);
+  pngfile = SD.open(filename, "r");
+  *size = pngfile.size();
+  return &pngfile;
+}
+
+void pngClose(void *handle) {
+  if (pngfile) pngfile.close();
+}
+
+int32_t pngRead(PNGFILE *page, uint8_t *buffer, int32_t length) {
+  if (!pngfile) return 0;
+  return pngfile.read(buffer, length);
+}
+
+int32_t pngSeek(PNGFILE *page, int32_t position) {
+  if (!pngfile) return 0;
+  return pngfile.seek(position);
+}
+
+int* loadImageSprite(const char *name) {
+  img.fillSprite(TFT_BLACK);
+  int16_t rc = png.open(name, pngOpen, pngClose, pngRead, pngSeek, pngDraw);  
+  int* arr = (int*)malloc(2* sizeof(int));
+  if (rc == PNG_SUCCESS) {
+    Serial.printf("image specs: %s (%d x %d), %d bpp, pixel type: %d\n", name, png.getWidth(), png.getHeight(), png.getBpp(), png.getPixelType());
+    arr[0] = png.getWidth();arr[1] = png.getHeight();
+    if (png.getWidth() > MAX_IMAGE_WIDTH) {
+      Serial.println("Image too wide for allocated line buffer size!");
+    }
+    else {
+      rc = png.decode(NULL, 0);
+      png.close();
+    }
+  }
+  return arr;
+}
+
+void drawImageSprite(int cs,int xpos, int ypos) {
+   digitalWrite (cs,LOW);
+   tft.fillScreen(BLACK);
+   img.pushSprite(xpos, ypos);
+   digitalWrite (cs,HIGH);  
+}
+
+void drawImageSpriteDual(int xpos, int ypos) {
+   digitalWrite (TFT_CS_1,LOW);
+   digitalWrite (TFT_CS_0,LOW);
+   tft.fillScreen(BLACK);
+   img.pushSprite(xpos, ypos);
+   digitalWrite (TFT_CS_1,HIGH);
+   digitalWrite (TFT_CS_0,HIGH);
+}
+
+void heartpng() {
+  int* dim = loadImageSprite("/heart.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void firework() {
+  int* dim = loadImageSprite("/firework.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void snake() {
+  int* dim = loadImageSprite("/snake.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void karen() {
+  int* dim = loadImageSprite("/karen.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void arrow() {
+  int* dim = loadImageSprite("/arrow.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void cry() {
+  int* dim = loadImageSprite("/cry.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void balloon() {
+  int* dim = loadImageSprite("/balloon.png");
+  drawImageSpriteDual((240-dim[0])/2,(240-dim[1])/2);
+}
+
+void heart() {
+   digitalWrite (TFT_CS_0,LOW);
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (80,80,50,RED);
+   img.fillSmoothCircle (160,80,50,RED);
+   for(int i=0;i<100;i++) img.drawLine(31+i,100,120,200,RED);
+   for(int i=0;i<100;i++) img.drawLine(209-i,100,120,200,RED);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_0,HIGH);  
+
+   digitalWrite (TFT_CS_1,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_1,HIGH);  
+}
+
+void eye() {
+   digitalWrite (TFT_CS_0,LOW);
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (120,140,50,YELLOW);
+   img.fillSmoothCircle (120,140,20,BLACK);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_0,HIGH);  
+
+   digitalWrite (TFT_CS_1,LOW);
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (120,140,50,YELLOW);
+   img.fillSmoothCircle (120,140,20,BLACK);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_1,HIGH);  
+}
+
+void righteye() {
+   digitalWrite (TFT_CS_0,LOW);
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (210,120,50,YELLOW);
+   img.fillSmoothCircle (210,120,20,BLACK);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_0,HIGH);  
+
+   digitalWrite (TFT_CS_1,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_1,HIGH);  
+}
+
+void lefteye() {
+   digitalWrite (TFT_CS_0,LOW);
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (30,120,50,CYAN);
+   img.fillSmoothCircle (30,120,20,BLACK);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_0,HIGH);  
+
+   digitalWrite (TFT_CS_1,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_1,HIGH);  
+}
+
+void sheepisheye() {
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (120,150,50,YELLOW);
+   img.fillSmoothCircle (120,150,20,BLACK);
+   
+   for(int i=0;i<20;i++) img.drawLine(120,0+i,200,80+i,YELLOW);
+   
+   digitalWrite (TFT_CS_0,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_0,HIGH);  
+
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (120,150,50,YELLOW);
+   img.fillSmoothCircle (120,150,20,BLACK);
+   
+   for(int i=0;i<20;i++) img.drawLine(40,80+i,120,0+i,YELLOW);
+ 
+   digitalWrite (TFT_CS_1,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_1,HIGH);  
+}
+
+void angryeye() {
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (120,200,50,RED);
+   img.fillSmoothCircle (120,200,20,BLACK);
+   
+   for(int i=0;i<40;i++) img.drawLine(40,200+i,200,0+i,RED);
+  
+   digitalWrite (TFT_CS_0,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_0,HIGH);  
+
+   img.fillSprite (BLACK);
+   img.fillSmoothCircle (120,200,50,RED);
+   img.fillSmoothCircle (120,200,20,BLACK);
+   
+   for(int i=0;i<40;i++) img.drawLine(200,200+i,40,0+i,RED);
+
+   digitalWrite (TFT_CS_1,LOW);
+   img.pushSprite(0, 10);
+   digitalWrite (TFT_CS_1,HIGH);  
+}
