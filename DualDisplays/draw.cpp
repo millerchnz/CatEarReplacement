@@ -92,7 +92,9 @@ void drawImageSpriteDual(int xpos, int ypos) {
    digitalWrite (TFT_CS_1,HIGH);
    digitalWrite (TFT_CS_0,HIGH);
 }
-
+/*
+ * This is 100ms faster end to end than loading a 20k file and rendering
+ */
 void drawImageSpriteHorizontalMirror(int cs,int xpos, int ypos) {
   int w=img.width(),h=img.height();
   for(int i=0;i<w/2;i++)
