@@ -98,16 +98,24 @@ void loop() {
   getTFT()->setPivot(getTFT()->width() / 2, getTFT()->height() / 2);
   int* dim = loadImageSprite("/angry1.PNG");
   drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
-  
-  digitalWrite (TFT_CS_1,LOW);
-  getTFT()->fillScreen(BLACK);
 
-  for(int i=0;i<getSprite()->width();i++)
+  for(int i=0;i<getSprite()->width()/2;i++)
   for(int j=0;j<getSprite()->height();j++) {
-    getTFT()->drawPixel(getSprite()->width()+(240-getSprite()->width())/2-i,(240-getSprite()->height())/2+j,getSprite()->readPixel(i,j));
+    getSprite()->drawPixel(i,j,getSprite()->readPixel(i,j)^getSprite()->readPixel(getSprite()->width()-i,j));
+  }
+  for(int i=0;i<getSprite()->width()/2;i++)
+  for(int j=0;j<getSprite()->height();j++) {
+    getSprite()->drawPixel(getSprite()->width()-i,j,getSprite()->readPixel(i,j)^getSprite()->readPixel(getSprite()->width()-i,j));
+  }
+  for(int i=0;i<getSprite()->width()/2;i++)
+  for(int j=0;j<getSprite()->height();j++) {
+    getSprite()->drawPixel(i,j,getSprite()->readPixel(i,j)^getSprite()->readPixel(getSprite()->width()-i,j));
   }
   
-  digitalWrite (TFT_CS_1,HIGH);  
+  //getTFT()->drawPixel(getSprite()->width()+(240-getSprite()->width())/2-i,(240-getSprite()->height())/2+j,getSprite()->readPixel(i,j));
+
+  //getTFT()->fillScreen(BLACK);
+  drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
    
   //dim = loadImageSprite("/angry2.PNG");
   //drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
