@@ -32,8 +32,9 @@
 #define TFT_CS_0 27
 #define TFT_CS_1 33
 
-
 void setupDisplay();
+TFT_eSprite *getSprite();
+TFT_eSPI *getTFT();
 
 int pngDraw(PNGDRAW *pDraw);
 void * pngOpen(const char *filename, int32_t *size);

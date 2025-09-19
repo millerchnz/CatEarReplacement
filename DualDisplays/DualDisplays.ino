@@ -81,6 +81,7 @@ void setup() {
 
 #define DELAY 1000
 void loop() {
+  /*
   File root = SD.open("/");
   while(File file = root.openNextFile()) {
     String strname = file.name();
@@ -93,12 +94,19 @@ void loop() {
       delay (DELAY);    
     }
   }
+  */
+  getTFT()->setPivot(getTFT()->width() / 2, getTFT()->height() / 2);
   int* dim = loadImageSprite("/angry1.PNG");
   drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
   
-  dim = loadImageSprite("/angry2.PNG");
-  drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
+   digitalWrite (TFT_CS_1,LOW);
+   getTFT()->fillScreen(BLACK);
+   getSprite()->setPivot(getSprite()->width() / 2, getSprite()->height() / 2);
+   getSprite()->pushRotated(180);
+   digitalWrite (TFT_CS_1,HIGH);  
+     
+  //dim = loadImageSprite("/angry2.PNG");
+  //drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
   delay (DELAY);    
   delay (DELAY);    
-  
 }

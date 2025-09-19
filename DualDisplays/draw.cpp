@@ -28,6 +28,9 @@ void setupDisplay() {
 
 }
 
+TFT_eSprite* getSprite(){return &img;}
+TFT_eSPI* getTFT(){return &tft;}
+
 int pngDraw(PNGDRAW *pDraw) {
   uint16_t lineBuffer[MAX_IMAGE_WIDTH];
   png.getLineAsRGB565(pDraw, lineBuffer, PNG_RGB565_BIG_ENDIAN, 0xffffffff);
