@@ -81,7 +81,7 @@ void setup() {
 
 #define DELAY 1000
 void loop() {
-  /*
+  
   File root = SD.open("/");
   while(File file = root.openNextFile()) {
     String strname = file.name();
@@ -94,31 +94,12 @@ void loop() {
       delay (DELAY);    
     }
   }
-  */
-  getTFT()->setPivot(getTFT()->width() / 2, getTFT()->height() / 2);
+  
+
   int* dim = loadImageSprite("/angry1.PNG");
   drawImageSprite(TFT_CS_0,(240-dim[0])/2,(240-dim[1])/2);
-
-  for(int i=0;i<getSprite()->width()/2;i++)
-  for(int j=0;j<getSprite()->height();j++) {
-    getSprite()->drawPixel(i,j,getSprite()->readPixel(i,j)^getSprite()->readPixel(getSprite()->width()-i,j));
-  }
-  for(int i=0;i<getSprite()->width()/2;i++)
-  for(int j=0;j<getSprite()->height();j++) {
-    getSprite()->drawPixel(getSprite()->width()-i,j,getSprite()->readPixel(i,j)^getSprite()->readPixel(getSprite()->width()-i,j));
-  }
-  for(int i=0;i<getSprite()->width()/2;i++)
-  for(int j=0;j<getSprite()->height();j++) {
-    getSprite()->drawPixel(i,j,getSprite()->readPixel(i,j)^getSprite()->readPixel(getSprite()->width()-i,j));
-  }
+  drawImageSpriteHorizontalMirror(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
   
-  //getTFT()->drawPixel(getSprite()->width()+(240-getSprite()->width())/2-i,(240-getSprite()->height())/2+j,getSprite()->readPixel(i,j));
-
-  //getTFT()->fillScreen(BLACK);
-  drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
-   
-  //dim = loadImageSprite("/angry2.PNG");
-  //drawImageSprite(TFT_CS_1,(240-dim[0])/2,(240-dim[1])/2);
   delay (DELAY);    
   delay (DELAY);    
 }

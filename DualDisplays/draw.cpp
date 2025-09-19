@@ -64,7 +64,7 @@ int* loadImageSprite(const char *name) {
   int16_t rc = png.open(name, pngOpen, pngClose, pngRead, pngSeek, pngDraw);  
   int* arr = (int*)malloc(2* sizeof(int));
   if (rc == PNG_SUCCESS) {
-    Serial.printf("image specs: %s (%d x %d), %d bpp, pixel type: %d\n", name, png.getWidth(), png.getHeight(), png.getBpp(), png.getPixelType());
+    //Serial.printf("image specs: %s (%d x %d), %d bpp, pixel type: %d\n", name, png.getWidth(), png.getHeight(), png.getBpp(), png.getPixelType());
     arr[0] = png.getWidth();arr[1] = png.getHeight();
     if (png.getWidth() > MAX_IMAGE_WIDTH) {
       Serial.println("Image too wide for allocated line buffer size!");
@@ -92,6 +92,18 @@ void drawImageSpriteDual(int xpos, int ypos) {
    digitalWrite (TFT_CS_1,HIGH);
    digitalWrite (TFT_CS_0,HIGH);
 }
+
+void drawImageSpriteHorizontalMirror(int cs,int xpos, int ypos) {
+  int w=img.width(),h=img.height();
+  for(int i=0;i<w/2;i++)
+  for(int j=0;j<h;j++) {
+    uint16_t t1 = img.readPixel(i,j), t2=img.readPixel(w-i,j);
+    img.drawPixel(i,j,t2);
+    img.drawPixel(w-i,j,t1);
+  }
+  drawImageSprite(cs,xpos,ypos);  
+}
+
 
 void heartpng() {
   int* dim = loadImageSprite("/heart.png");

@@ -44,6 +44,7 @@ int32_t pngSeek(PNGFILE *page, int32_t position);
 int* loadImageSprite(const char *name);
 void drawImageSprite(int cs,int xpos, int ypos);
 void drawImageSpriteDual(int xpos, int ypos);
+void drawImageSpriteHorizontalMirror(int cs,int xpos, int ypos);
 
 void heartpng();
 void firework();
