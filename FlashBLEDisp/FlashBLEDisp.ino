@@ -125,9 +125,7 @@ void loop() {
   if (Serial.available()) {
     SerialBT.write(Serial.read());
   }
-  if (SerialBT.available()) {
-    Serial.println("data available");
-    
+  if (SerialBT.available()) {  
     int v = readCommand();
     switch(v) {
       case 0:
@@ -137,8 +135,10 @@ void loop() {
         SerialBT.println("Command overflowed");
         return;
     }
-
+    long s = millis();
     int err = showImage(3,v);
+    long e = millis();
+    SerialBT.printf("Image at %d loaded and displayed in %dms\n",v,e-s);
     if(err<0) {
       SerialBT.printf("Image at %d doesn't exist\n",v);
     }
