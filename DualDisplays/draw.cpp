@@ -22,6 +22,7 @@ void setupDisplay() {
    digitalWrite (TFT_CS_1, HIGH);
 
    //create the sprite
+   img.setAttribute(PSRAM_ENABLE, true);
    img.createSprite(240, 230);
    img.setRotation(0);
    img.fillSprite(TFT_BLACK);

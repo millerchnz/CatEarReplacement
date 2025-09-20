@@ -32,6 +32,7 @@
 
 #include "draw.h"
 #include <cstring> 
+#include <esp_heap_caps.h>
 
 //SD Card const
 #define SD_CS    16
@@ -41,7 +42,17 @@
 
 void setup() {
 
-   Serial.begin (115200);   
+   Serial.begin (115200); 
+    size_t freePsram = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+    size_t totalPsram = heap_caps_get_total_size(MALLOC_CAP_SPIRAM);
+
+    Serial.print("Free PSRAM: ");
+    Serial.print(freePsram);
+    Serial.println(" bytes");
+
+    Serial.print("Total PSRAM: ");
+    Serial.print(totalPsram);
+    Serial.println(" bytes");  
 
    //init cable select pins
    pinMode (TFT_CS_0, OUTPUT);
