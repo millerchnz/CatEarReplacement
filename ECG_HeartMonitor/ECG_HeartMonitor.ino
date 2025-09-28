@@ -42,7 +42,7 @@
  * Author: Generated for CatEarReplacement Project
  * Date: 2024
  */
-
+ 
 #include "draw.h"
 #include <esp_heap_caps.h>
 
@@ -56,7 +56,6 @@
 #define ECG_BUFFER_SIZE 240     // Buffer size for ECG data (matches display width)
 #define ECG_SAMPLE_RATE 250     // Sample rate in Hz
 #define ECG_GAIN 100            // Display gain multiplier
-#define ECG_BASELINE 100        // Baseline position on display (adjusted for smaller sprite)
 
 // Global variables
 float ecgBuffer[ECG_BUFFER_SIZE];

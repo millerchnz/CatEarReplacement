@@ -41,6 +41,7 @@
 #define DISPLAY_HEIGHT 280
 #define ECG_AREA_HEIGHT 200     // Height of ECG plotting area
 #define INFO_AREA_HEIGHT 80     // Height of information area
+#define ECG_BASELINE 100        // Baseline position on display (adjusted for smaller sprite)
 
 // Memory-optimized sprite dimensions
 #define ECG_SPRITE_WIDTH 240

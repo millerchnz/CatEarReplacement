@@ -74,7 +74,11 @@ void drawECGWaveform() {
   for(int i = 0; i < ECG_SPRITE_WIDTH; i++) {
     int bufferIdx = (bufferIndex - ECG_SPRITE_WIDTH + i + 240) % 240;
     int x = i;
-    int y = ECG_SPRITE_HEIGHT - (int)(ecgBuffer[bufferIdx] * ECG_SPRITE_HEIGHT / 240);
+
+    // Double the amplitude for display (multiply by 2)
+    float amplitudeMultiplier = 2.0;
+    float adjustedValue = (ecgBuffer[bufferIdx] - ECG_BASELINE) * amplitudeMultiplier + ECG_BASELINE;
+    int y = ECG_SPRITE_HEIGHT - (int)(adjustedValue * ECG_SPRITE_HEIGHT / 240);    
     
     // Clamp y to sprite bounds
     if(y < 0) y = 0;
