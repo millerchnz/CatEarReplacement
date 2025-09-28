@@ -98,10 +98,9 @@ void setup() {
   // Initialize displays
   setupDisplay();
   
-  // Draw initial ECG grid and labels
+  // Draw initial ECG grid
   drawECGGrid();
-  drawECGLabels();
-  
+
   Serial.println("ECG Heart Monitor Initialized");
   Serial.println("Place electrodes on chest and wait for signal...");
   
@@ -130,7 +129,6 @@ void loop() {
     
     // Apply gain and offset for display
     float ecgValue = (voltage - 1.65) * ECG_GAIN + ECG_BASELINE;
-    Serial.println(ecgValue);
         
     // Add to buffer
     ecgBuffer[bufferIndex] = ecgValue;
@@ -146,13 +144,6 @@ void loop() {
     if(bufferIndex % 8 == 0) {
       updateECGDisplay();
     }
-  }
-  
-  // Update heart rate display every second
-  static unsigned long lastHeartRateUpdate = 0;
-  if(millis() - lastHeartRateUpdate >= 1000) {
-    lastHeartRateUpdate = millis();
-    updateHeartRateDisplay();
   }
   
   // Small delay to prevent overwhelming the system
@@ -172,7 +163,7 @@ void updateStatistics(float value) {
     avgValue = sum / ECG_BUFFER_SIZE;
   }
   
-  if(value < minValue) minValue = value;
+  if(value < minValue && value > 0) minValue = value;
   if(value > maxValue) maxValue = value;
 }
 
@@ -238,13 +229,4 @@ void updateECGDisplay() {
   
   // Update statistics display
   updateStatisticsDisplay();
-}
-
-void updateHeartRateDisplay() {
-  // Update heart rate display
-  drawHeartRate(heartRate);
-  
-  // Print to serial for debugging
-  Serial.printf("Heart Rate: %d BPM, Min: %.1f, Max: %.1f, Avg: %.1f\n", 
-                heartRate, minValue, maxValue, avgValue);
 }

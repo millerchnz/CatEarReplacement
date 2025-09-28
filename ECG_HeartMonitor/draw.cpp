@@ -39,9 +39,6 @@ void setupDisplay() {
   ecgSprite.createSprite(ECG_SPRITE_WIDTH, ECG_SPRITE_HEIGHT);
   ecgSprite.setRotation(0);
   ecgSprite.fillSprite(ECG_BG_COLOR);
-  
-  // Draw initial info area directly to display
-  drawECGLabels();
 }
 
 TFT_eSprite *getECGSprite() {
@@ -65,16 +62,8 @@ void drawECGGrid() {
     ecgSprite.drawFastVLine(x, 0, ECG_SPRITE_HEIGHT, ECG_GRID_COLOR);
   }
   
-  // Draw center horizontal line (baseline)
-  ecgSprite.drawFastHLine(0, ECG_SPRITE_HEIGHT/2, ECG_SPRITE_WIDTH, WHITE);
-  
   // Update ECG sprite to display 0 only
   updateDisplay0();
-}
-
-void drawECGLabels() {
-  // Draw info area directly to display 1 only
-  updateInfoArea();
 }
 
 void drawECGWaveform() {
@@ -116,24 +105,6 @@ void drawECGPoint(int x, int y, uint16_t color) {
 void drawECGLine(int x1, int y1, int x2, int y2, uint16_t color) {
   ecgSprite.drawLine(x1, y1, x2, y2, color);
 }
-
-void drawHeartRate(int heartRate) {
-  // Draw heart rate directly to display 1 only (circular display)
-  digitalWrite(TFT_CS_1, LOW);
-  tft.fillRect(80, 60, 80, 15, ECG_BG_COLOR);  // Clear area around heart rate
-  tft.setTextColor(ECG_TRACE_COLOR, ECG_BG_COLOR);
-  tft.setTextSize(2);
-  tft.setCursor(80, 60);  // Centered horizontally
-  
-  if(heartRate > 0) {
-    tft.print(heartRate);
-    tft.print(" BPM");
-  } else {
-    tft.print("-- BPM");
-  }
-  digitalWrite(TFT_CS_1, HIGH);
-}
-
 
 void drawLeadOffWarning() {
   // Draw lead-off warning directly to display 1 only (circular display)
@@ -249,20 +220,9 @@ void updateInfoArea() {
   digitalWrite(TFT_CS_1, LOW);
   tft.fillScreen(ECG_BG_COLOR);  // Clear entire circular display
   
-  // Draw title - centered at top for circular display
-  tft.setTextColor(ECG_TEXT_COLOR, ECG_BG_COLOR);
-  tft.setTextSize(2);
-  tft.setCursor(60, 20);  // Centered horizontally, offset from top edge
-  tft.print("ECG Monitor");
-  
-  // Draw heart rate label and value - centered
-  tft.setTextSize(1);
-  tft.setCursor(60, 60);  // Centered horizontally
-  tft.print("HR:");
-  
   // Draw heart rate value
   tft.setTextColor(ECG_TRACE_COLOR, ECG_BG_COLOR);
-  tft.setTextSize(2);
+  tft.setTextSize(3);
   tft.setCursor(80, 60);  // Next to HR label
   if(heartRate > 0) {
     tft.print(heartRate);
@@ -273,26 +233,22 @@ void updateInfoArea() {
   
   // Draw statistics labels and values - arranged in center area
   tft.setTextColor(ECG_TEXT_COLOR, ECG_BG_COLOR);
-  tft.setTextSize(1);
+  tft.setTextSize(2);
   
   // Min label and value
-  tft.setCursor(40, 100);  // Left side of center
+  tft.setCursor(60, 140);  // Left side of center
   tft.print("Min:");
   tft.print(minValue, 1);
   
   // Max label and value
-  tft.setCursor(120, 100);  // Right side of center
+  tft.setCursor(60, 120);  // Right side of center
   tft.print("Max:");
   tft.print(maxValue, 1);
   
   // Average label and value
-  tft.setCursor(80, 120);  // Center bottom
+  tft.setCursor(60, 160);  // Center bottom
   tft.print("Avg:");
   tft.print(avgValue, 1);
-  
-  // Draw lead status - centered at bottom for circular display
-  tft.setCursor(80, 200);  // Centered horizontally, offset from bottom edge
-  tft.print("Lead:");
   
   digitalWrite(TFT_CS_1, HIGH);
 }

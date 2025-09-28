@@ -63,7 +63,6 @@ void drawECGPoint(int x, int y, uint16_t color);
 void drawECGLine(int x1, int y1, int x2, int y2, uint16_t color);
 
 // Information display functions (direct to display)
-void drawECGLabels();
 void drawHeartRate(int heartRate);
 void drawLeadOffWarning();
 void updateStatisticsDisplay();
