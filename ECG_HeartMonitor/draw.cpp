@@ -232,7 +232,8 @@ void updateInfoArea() {
     tft.print(heartRate);
     tft.print(" BPM");
   } else {
-    tft.print("-- BPM");
+    tft.print(avgValue, 1);
+    tft.print(" BPM");
   }
   
   // Draw statistics labels and values - arranged in center area
